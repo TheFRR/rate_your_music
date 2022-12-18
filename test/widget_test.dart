@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:rate_your_music/app.dart';
 import 'package:rate_your_music/main.dart';
 
 void main() {

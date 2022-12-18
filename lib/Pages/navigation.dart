@@ -12,7 +12,7 @@ class HomePageNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [addBoxSvg, musicNoteSvg, personSvg, searchSvg];
+    const items = [musicNoteSvg, addBoxSvg, searchSvg, personSvg];
 
     return Theme(
         data: ThemeData().copyWith(splashFactory: NoSplash.splashFactory),

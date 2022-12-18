@@ -10,6 +10,8 @@ class SimpleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 0,
+      color: Colors.black12,
       shadowColor: Colors.transparent,
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.all(0),
