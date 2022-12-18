@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     const MusicCollection(),
     const AddAlbum(),
     const Search(),
-    RegisterPage()
+    const LoginPage()
   ];
   @override
   Widget build(BuildContext context) {

@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rate_your_music/Pages/home_page/home_page.dart';
+import 'package:rate_your_music/Pages/login_page/login_page.dart';
+import 'package:rate_your_music/Stores/login_store.dart';
+import 'package:rate_your_music/Stores/music_collection_store.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final LoginStore _loginStore = LoginStore();
+  final MusicCollectionStore _musicCollectionStore = MusicCollectionStore();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        backgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
-    );
+    return MultiProvider(
+        providers: [
+          Provider<LoginStore>(create: (_) => _loginStore),
+          Provider<MusicCollectionStore>(create: (_) => _musicCollectionStore)
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            backgroundColor: Colors.white,
+            primarySwatch: Colors.blue,
+          ),
+          home: const HomePage(),
+        ));
   }
 }

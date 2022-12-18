@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_your_music/Stores/music_collection_store.dart';
 
-class AddAlbum extends StatelessWidget {
+class AddAlbum extends StatefulWidget {
   const AddAlbum({super.key});
+  @override
+  State<StatefulWidget> createState() => AddAlbumState();
+}
+
+class AddAlbumState extends State<AddAlbum> {
+  late MusicCollectionStore musicCollectionStore;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    musicCollectionStore = Provider.of<MusicCollectionStore>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +116,7 @@ class AddAlbum extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: ElevatedButton(
-                onPressed: () {},
+                onPressed: musicCollectionStore.add,
                 child: const Center(
                   child: Text("Добавить альбом"),
                 )),
