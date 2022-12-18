@@ -13,11 +13,22 @@ mixin _$MusicCollectionStore on _MusicCollectionStoreBase, Store {
       ActionController(name: '_MusicCollectionStoreBase', context: context);
 
   @override
-  void add() {
+  void add(String albumName, String bandName, List<String> genres) {
     final _$actionInfo = _$_MusicCollectionStoreBaseActionController
         .startAction(name: '_MusicCollectionStoreBase.add');
     try {
-      return super.add();
+      return super.add(albumName, bandName, genres);
+    } finally {
+      _$_MusicCollectionStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void update(MusicAlbum album) {
+    final _$actionInfo = _$_MusicCollectionStoreBaseActionController
+        .startAction(name: '_MusicCollectionStoreBase.update');
+    try {
+      return super.update(album);
     } finally {
       _$_MusicCollectionStoreBaseActionController.endAction(_$actionInfo);
     }

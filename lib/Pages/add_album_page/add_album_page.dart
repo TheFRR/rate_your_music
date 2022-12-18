@@ -19,6 +19,15 @@ class AddAlbumState extends State<AddAlbum> {
     musicCollectionStore = Provider.of<MusicCollectionStore>(context);
   }
 
+  final TextEditingController nameController =
+      TextEditingController(text: 'Название альбома...');
+
+  final TextEditingController bandController =
+      TextEditingController(text: 'Исполнитель...');
+
+  final TextEditingController genresController =
+      TextEditingController(text: 'Жанры...');
+
   @override
   Widget build(BuildContext context) {
     return ListView(children: [
@@ -40,11 +49,13 @@ class AddAlbumState extends State<AddAlbum> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextFormField(
-            initialValue: "Бебра",
-            decoration:
-                const InputDecoration(suffixIcon: Icon(Icons.man_outlined)),
-          ),
-        )
+              decoration:
+                  const InputDecoration(suffixIcon: Icon(Icons.man_outlined)),
+              controller: nameController,
+              onChanged: (text) {
+                setState(() {});
+              }),
+        ),
       ]),
       Wrap(children: [
         const Padding(
@@ -54,8 +65,11 @@ class AddAlbumState extends State<AddAlbum> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextFormField(
-            initialValue: "Бебра",
+            controller: bandController,
             decoration: const InputDecoration(suffixIcon: Icon(Icons.title)),
+            onChanged: (text) {
+              setState(() {});
+            },
           ),
         )
       ]),
@@ -67,10 +81,12 @@ class AddAlbumState extends State<AddAlbum> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextFormField(
-            initialValue: "Бебра",
-            decoration: const InputDecoration(
-                suffixIcon: Icon(Icons.music_note_rounded)),
-          ),
+              controller: genresController,
+              decoration: const InputDecoration(
+                  suffixIcon: Icon(Icons.music_note_rounded)),
+              onChanged: (text) {
+                setState(() {});
+              }),
         )
       ]),
       Wrap(children: [
@@ -116,7 +132,8 @@ class AddAlbumState extends State<AddAlbum> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: ElevatedButton(
-                onPressed: musicCollectionStore.add,
+                onPressed: () => musicCollectionStore.add(nameController.text,
+                    bandController.text, [genresController.text]),
                 child: const Center(
                   child: Text("Добавить альбом"),
                 )),

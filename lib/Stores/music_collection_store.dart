@@ -13,8 +13,12 @@ abstract class _MusicCollectionStoreBase with Store {
   ]);
 
   @action
-  void add() {
-    albumsList.add(MusicAlbum(
-        "Асбастос", "Ночной проспект", ["Post-Punk", "Post-Industrial"]));
+  void add(String albumName, String bandName, List<String> genres) {
+    albumsList.add(MusicAlbum(albumName, bandName, genres));
+  }
+
+  @action
+  void update(MusicAlbum album) {
+    albumsList.firstWhere((element) => element == album).BandName = "Floppa";
   }
 }

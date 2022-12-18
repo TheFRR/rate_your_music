@@ -49,7 +49,7 @@ class _MusicCollectionState extends State<MusicCollection> {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const AlbumPage())),
+                                    builder: (context) => AlbumPage(e))),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),

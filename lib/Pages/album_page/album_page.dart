@@ -4,15 +4,34 @@ import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:rate_your_music/Entities/music_album.dart';
 
-class AlbumPage extends StatelessWidget {
-  const AlbumPage({super.key});
+import '../../Stores/music_collection_store.dart';
+
+// ignore: must_be_immutable
+class AlbumPage extends StatefulWidget {
+  AlbumPage(this.currentAlbum, {super.key});
+  late MusicAlbum currentAlbum;
+  @override
+  State<StatefulWidget> createState() => _AlbumPageState();
+}
+
+class _AlbumPageState extends State<AlbumPage> {
+  late MusicCollectionStore musicCollectionStore;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    musicCollectionStore = Provider.of<MusicCollectionStore>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ночной проспект - Кислоты'),
+        title: Text(
+            "${widget.currentAlbum.BandName} - ${widget.currentAlbum.AlbumName}"),
       ),
       body: Wrap(
         children: [
@@ -43,7 +62,8 @@ class AlbumPage extends StatelessWidget {
                   Icons.star,
                   color: Colors.amber,
                 ),
-                onRatingUpdate: (double value) {},
+                onRatingUpdate: (_) =>
+                    musicCollectionStore.update(widget.currentAlbum),
               ),
             ),
           )
