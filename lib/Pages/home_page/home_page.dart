@@ -8,6 +8,8 @@ import 'package:rate_your_music/Pages/navigation.dart';
 import 'package:rate_your_music/Pages/profile_page/profile.dart';
 import 'package:rate_your_music/Pages/register_page/register_page.dart';
 import 'package:rate_your_music/Pages/search_page/search_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,11 +20,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final List<Widget> _screens = <Widget>[
     const MusicCollection(),
     const AddAlbum(),
     const Search(),
-    const LoginPage()
+    const Profile()
   ];
   @override
   Widget build(BuildContext context) {

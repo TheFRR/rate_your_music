@@ -44,17 +44,18 @@ class _AlbumPageState extends State<AlbumPage> {
             ),
           ),
           const Center(child: Text("Рейтинг: 4.2 из 5.0 из 12345 оценок")),
-          const Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Center(child: Text("Жанры: Post-Punk, Post-Industrial")),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Center(
+                child: Text("Жанры: ${widget.currentAlbum.Genres.first}")),
           ),
           Center(
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0, top: 8.0),
               child: RatingBar.builder(
                 itemSize: 30,
-                initialRating: 3,
-                minRating: 1,
+                initialRating: 0,
+                minRating: 0.5,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,

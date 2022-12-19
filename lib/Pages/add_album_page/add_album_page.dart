@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_your_music/Entities/music_album.dart';
+import 'package:rate_your_music/Pages/home_page/home_page.dart';
+import 'package:rate_your_music/Pages/music_collection_page/music_collection_page.dart';
 import 'package:rate_your_music/Stores/music_collection_store.dart';
 
 class AddAlbum extends StatefulWidget {
@@ -30,6 +35,7 @@ class AddAlbumState extends State<AddAlbum> {
 
   @override
   Widget build(BuildContext context) {
+    MusicAlbum currentMusicAlbum;
     return ListView(children: [
       Wrap(
         // ignore: prefer_const_literals_to_create_immutables
@@ -51,7 +57,7 @@ class AddAlbumState extends State<AddAlbum> {
           child: TextFormField(
               decoration:
                   const InputDecoration(suffixIcon: Icon(Icons.man_outlined)),
-              controller: nameController,
+              controller: bandController,
               onChanged: (text) {
                 setState(() {});
               }),
@@ -65,7 +71,7 @@ class AddAlbumState extends State<AddAlbum> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextFormField(
-            controller: bandController,
+            controller: nameController,
             decoration: const InputDecoration(suffixIcon: Icon(Icons.title)),
             onChanged: (text) {
               setState(() {});
@@ -132,8 +138,19 @@ class AddAlbumState extends State<AddAlbum> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.95,
             child: ElevatedButton(
-                onPressed: () => musicCollectionStore.add(nameController.text,
-                    bandController.text, [genresController.text]),
+                onPressed: () => {
+                      currentMusicAlbum = MusicAlbum(nameController.text,
+                          bandController.text, [genresController.text]),
+                      FirebaseFirestore.instance
+                          .collection('albums')
+                          .add(currentMusicAlbum.toMap()),
+                      musicCollectionStore.add(nameController.text,
+                          bandController.text, [genresController.text]),
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()))
+                    },
                 child: const Center(
                   child: Text("Добавить альбом"),
                 )),

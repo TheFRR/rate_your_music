@@ -29,8 +29,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  firebase_core:
+  firebase_messaging:
+  firebase_auth: ^4.2.1
   build_runner: ^2.3.0
   mobx_codegen: ^2.0.7+3
+  fluttertoast: ^8.1.2
   flutter:
     sdk: flutter
 
@@ -44,6 +48,7 @@ dependencies:
   provider: ^6.0.5
   flutter_mobx: ^2.0.6+3
   objectbox: ^1.7.0
+  cloud_firestore: ^4.2.0
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +61,10 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
+
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.2
+  firebase_messaging_platform_interface: 4.2.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
