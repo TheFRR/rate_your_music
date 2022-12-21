@@ -22,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void initState() {
+    super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
   }
@@ -92,11 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
               width: MediaQuery.of(context).size.width * 0.65,
               child: ElevatedButton(
                   onPressed: () async {
-                    var _email = emailController.text;
-                    var _password = passwordController.text;
+                    var email = emailController.text;
+                    var password = passwordController.text;
                     DartUser? user =
                         await authService.registerWithEmailAndPassword(
-                            _email.trim(), _password.trim());
+                            email.trim(), password.trim());
                     if (user == null) {
                       Fluttertoast.showToast(
                           msg: "Не получилось зарегать...",
@@ -107,11 +108,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           textColor: Colors.white,
                           fontSize: 16.0);
                     } else {
-                      var _email = emailController.text;
-                      var _password = passwordController.text;
+                      var email = emailController.text;
+                      var password = passwordController.text;
                       DartUser? user =
                           await authService.signInWithEmailAndPassword(
-                              _email.trim(), _password.trim());
+                              email.trim(), password.trim());
                       if (user != null) {
                         // ignore: use_build_context_synchronously
                         Navigator.push(

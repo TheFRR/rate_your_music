@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_your_music/Entities/music_album.dart';
 import 'package:rate_your_music/Pages/album_page/album_page.dart';
@@ -80,6 +81,15 @@ class _SearchState extends State<Search> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => AlbumPage(item.first)));
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Ничего не найдено...",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                       }
                     },
                     child: const Center(
@@ -100,7 +110,7 @@ class _SearchState extends State<Search> {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: TextFormField(
                   readOnly: true,
-                  initialValue: "Бебра",
+                  initialValue: e.toString(),
                   decoration: const InputDecoration(
                       suffixIcon: Icon(Icons.subdirectory_arrow_left)),
                 ))),
