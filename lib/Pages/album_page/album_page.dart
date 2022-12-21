@@ -36,103 +36,120 @@ class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
     List<Rating> currrentRatingsList = widget.currentAlbum.Ratings;
+    int numOfRates = currrentRatingsList.length;
     Iterable<Rating> ratingFromCurrentUser;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-            "${widget.currentAlbum.BandName} - ${widget.currentAlbum.AlbumName}"),
-      ),
-      body: Wrap(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image(
-              alignment: Alignment.topCenter,
-              image: NetworkImage(widget.currentAlbum.ImageUrl),
-            ),
+    double generalRating = 0;
+    for (var element in currrentRatingsList) {
+      generalRating += element.Value;
+    }
+    if (numOfRates > 0) generalRating /= numOfRates;
+    return WillPopScope(
+        onWillPop: () async {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const HomePage()));
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+                "${widget.currentAlbum.BandName} - ${widget.currentAlbum.AlbumName}"),
           ),
-          const Center(child: Text("Рейтинг: 4.2 из 5.0 из 12345 оценок")),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Center(
-                child: Text("Жанры: ${widget.currentAlbum.Genres.first}")),
-          ),
-          Center(
-            child: Material(
-              child: Observer(
-                builder: (context) => Padding(
-                  padding: const EdgeInsets.only(left: 10.0, top: 8.0),
-                  child: RatingBar.builder(
-                      itemSize: 30,
-                      initialRating: widget.currentAlbum.Ratings
-                              .where((e) =>
-                                  e.UserID ==
-                                  Provider.of<DartUser?>(context,
-                                          listen: false)!
-                                      .id)
-                              .isNotEmpty
-                          ? widget.currentAlbum.Ratings
-                              .where((e) =>
-                                  e.UserID ==
-                                  Provider.of<DartUser?>(context,
-                                          listen: false)!
-                                      .id)
-                              .first
-                              .Value
-                          : 0,
-                      minRating: 0.5,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                      onRatingUpdate: (value) => {
-                            ratingFromCurrentUser = currrentRatingsList.where(
-                                (item) =>
-                                    item.UserID ==
-                                    Provider.of<DartUser?>(context,
-                                            listen: false)!
-                                        .id),
-                            if (ratingFromCurrentUser.isNotEmpty)
-                              {
-                                currrentRatingsList[currrentRatingsList
-                                        .indexOf(ratingFromCurrentUser.first)] =
-                                    Rating(
-                                        value,
+          body: Wrap(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Image(
+                  alignment: Alignment.topCenter,
+                  image: NetworkImage(widget.currentAlbum.ImageUrl),
+                ),
+              ),
+              Center(
+                  child: Text(
+                      "Рейтинг: $generalRating из 5.0 из $numOfRates оценок")),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Center(
+                    child:
+                        Text("Жанры: ${widget.currentAlbum.Genres.join(',')}")),
+              ),
+              Center(
+                child: Material(
+                  child: Observer(
+                    builder: (context) => Padding(
+                      padding: const EdgeInsets.only(left: 10.0, top: 8.0),
+                      child: RatingBar.builder(
+                          itemSize: 30,
+                          initialRating: widget.currentAlbum.Ratings
+                                  .where((e) =>
+                                      e.UserID ==
+                                      Provider.of<DartUser?>(context,
+                                              listen: false)!
+                                          .id)
+                                  .isNotEmpty
+                              ? widget.currentAlbum.Ratings
+                                  .where((e) =>
+                                      e.UserID ==
+                                      Provider.of<DartUser?>(context,
+                                              listen: false)!
+                                          .id)
+                                  .first
+                                  .Value
+                              : 0,
+                          minRating: 0.5,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                          onRatingUpdate: (value) => {
+                                ratingFromCurrentUser =
+                                    currrentRatingsList.where((item) =>
+                                        item.UserID ==
                                         Provider.of<DartUser?>(context,
                                                 listen: false)!
                                             .id),
-                              }
-                            else
-                              {
-                                currrentRatingsList.add(Rating(
-                                    value,
-                                    Provider.of<DartUser?>(context,
-                                            listen: false)!
-                                        .id)),
-                              },
-                            FirebaseFirestore.instance
-                                .collection('albums')
-                                .doc(widget.currentAlbum.AlbumID)
-                                .update({
-                              'ratings': currrentRatingsList
-                                  .map((e) => e.toMap())
-                                  .toList()
-                            }),
-                            musicCollectionStore.update(widget.currentAlbum),
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()))
-                          }),
+                                if (ratingFromCurrentUser.isNotEmpty)
+                                  {
+                                    currrentRatingsList[
+                                            currrentRatingsList.indexOf(
+                                                ratingFromCurrentUser.first)] =
+                                        Rating(
+                                            value,
+                                            Provider.of<DartUser?>(context,
+                                                    listen: false)!
+                                                .id),
+                                  }
+                                else
+                                  {
+                                    currrentRatingsList.add(Rating(
+                                        value,
+                                        Provider.of<DartUser?>(context,
+                                                listen: false)!
+                                            .id)),
+                                  },
+                                FirebaseFirestore.instance
+                                    .collection('albums')
+                                    .doc(widget.currentAlbum.AlbumID)
+                                    .update({
+                                  'ratings': currrentRatingsList
+                                      .map((e) => e.toMap())
+                                      .toList()
+                                }),
+                                musicCollectionStore
+                                    .update(widget.currentAlbum),
+                                setState(() {
+                                  currrentRatingsList =
+                                      widget.currentAlbum.Ratings;
+                                })
+                              }),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+              )
+            ],
+          ),
+        ));
   }
 }

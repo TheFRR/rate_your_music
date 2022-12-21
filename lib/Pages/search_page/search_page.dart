@@ -40,7 +40,6 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return ListView(children: [
       Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
@@ -98,23 +97,23 @@ class _SearchState extends State<Search> {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Text(
-                style: TextStyle(fontWeight: FontWeight.bold),
-                "История поиска"),
-          ),
-          Wrap(children: [
-            ...[1, 2, 3].map((e) => Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: TextFormField(
-                  readOnly: true,
-                  initialValue: e.toString(),
-                  decoration: const InputDecoration(
-                      suffixIcon: Icon(Icons.subdirectory_arrow_left)),
-                ))),
-          ])
+          // const Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          //   child: Text(
+          //       style: TextStyle(fontWeight: FontWeight.bold),
+          //       "История поиска"),
+          // ),
+          // Wrap(children: [
+          //   ...[1, 2, 3].map((e) => Padding(
+          //       padding:
+          //           const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          //       child: TextFormField(
+          //         readOnly: true,
+          //         initialValue: e.toString(),
+          //         decoration: const InputDecoration(
+          //             suffixIcon: Icon(Icons.subdirectory_arrow_left)),
+          //       ))),
+          // ])
         ],
       ),
     ]);

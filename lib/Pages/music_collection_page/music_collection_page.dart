@@ -22,11 +22,13 @@ class MusicCollection extends StatefulWidget {
 
 class _MusicCollectionState extends State<MusicCollection> {
   late MusicCollectionStore musicCollectionStore;
+  late DartUser? currentUser;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     musicCollectionStore = Provider.of<MusicCollectionStore>(context);
+    currentUser = Provider.of<DartUser?>(context);
   }
 
   @override
@@ -36,118 +38,134 @@ class _MusicCollectionState extends State<MusicCollection> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Observer(
-          builder: (context) => SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: getWidget() == null
-                    ? const Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Center(
-                            child: Text("Вы ещё не оценивали альбомы...")))
-                    : Wrap(children: getWidget() as List<Widget>),
-              )),
-    );
+    // return Material(child: Observer(builder: (context)
+    {
+      return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: getWidget() == null
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Center(child: Text("Вы ещё не оценивали альбомы...")))
+              : Material(
+                  child: Observer(
+                    builder: ((context) =>
+                        Wrap(children: getWidget() as List<Widget>)),
+                  ),
+                ));
+    }
   }
 
   List<Widget>? getWidget() {
     List<Widget> widgetsToAdd = [];
-    for (var e in musicCollectionStore.albumsList) {
-      var currentRatings = (e.Ratings as List).where(
-          (rating) => rating.UserID == Provider.of<DartUser?>(context)!.id);
-      if (currentRatings.isNotEmpty) {
-        var currentRating = currentRatings.first;
-        widgetsToAdd.add(SizedBox(
-          width: MediaQuery.of(context).size.width / 2,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SimpleCard(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Material(
-                      child: Observer(
-                        builder: (context) => InkWell(
-                          child: Image(
-                            image: NetworkImage(e.ImageUrl),
-                          ),
-                          onTap: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AlbumPage(e))),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                          textAlign: TextAlign.center,
-                          "${e.BandName} - ${e.AlbumName}"),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: Wrap(
-                        spacing: 0,
+    var user = currentUser;
+    if (user != null) {
+      for (var e in musicCollectionStore.albumsList) {
+        var currentRatings = (e.Ratings as List)
+            .where((rating) => rating.UserID == currentUser!.id);
+        int numOfRates = e.Ratings.length;
+        double generalRating = 0;
+        for (var element in e.Ratings) {
+          generalRating += element.Value;
+        }
+        generalRating /= numOfRates;
+        if (currentRatings.isNotEmpty) {
+          var currentRating = currentRatings.first;
+          widgetsToAdd.add(Material(
+            child: Observer(
+              builder: (context) => SizedBox(
+                width: MediaQuery.of(context).size.width / 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SimpleCard(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         children: [
-                          RatingBar.builder(
-                            itemSize: 20,
-                            initialRating: currentRating.Value,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                          Material(
+                            child: Observer(
+                              builder: (context) => InkWell(
+                                child: Image(
+                                  image: NetworkImage(e.ImageUrl),
+                                ),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AlbumPage(e))),
+                              ),
                             ),
-                            onRatingUpdate: (rating) {
-                              //print(rating);
-                            },
                           ),
-                          const Padding(
-                              padding: EdgeInsets.only(top: 5.0),
-                              child: Text('Ваша оценка'))
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                                textAlign: TextAlign.center,
+                                "${e.BandName} - ${e.AlbumName}"),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                            width: double.maxFinite,
+                            child: Wrap(
+                              spacing: 0,
+                              children: [
+                                RatingBar.builder(
+                                  itemSize: 20,
+                                  initialRating: currentRating.Value,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    //print(rating);
+                                  },
+                                ),
+                                const Padding(
+                                    padding: EdgeInsets.only(top: 5.0),
+                                    child: Text('Ваша оценка'))
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: SizedBox(
+                              width: double.maxFinite,
+                              child: Wrap(
+                                children: [
+                                  RatingBar.builder(
+                                    itemSize: 20,
+                                    initialRating: generalRating,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      //print(rating);
+                                    },
+                                  ),
+                                  const Padding(
+                                      padding: EdgeInsets.only(top: 5.0),
+                                      child: Text('Общая оценка'))
+                                ],
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: SizedBox(
-                        width: double.maxFinite,
-                        child: Wrap(
-                          children: [
-                            RatingBar.builder(
-                              itemSize: 20,
-                              initialRating: 3,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                                //print(rating);
-                              },
-                            ),
-                            const Padding(
-                                padding: EdgeInsets.only(top: 5.0),
-                                child: Text('Общая оценка'))
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ));
+          ));
+        }
       }
     }
     if (widgetsToAdd.isNotEmpty) return widgetsToAdd;

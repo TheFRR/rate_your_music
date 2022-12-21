@@ -10,24 +10,23 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Observer(
-        builder: (context) => Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.65,
-            child: ElevatedButton(
-                onPressed: () {
-                  AuthService().logOut();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()));
-                },
-                child: const Center(
-                  child: Text("Выйти из аккаунта"),
-                )),
-          ),
-        ),
+    return
+        // Material(
+        //   child: Observer(
+        //     builder: (context) =>
+        Center(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.65,
+        height: 30,
+        child: ElevatedButton(
+            onPressed: () {
+              AuthService().logOut();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
+            },
+            child: const Center(
+              child: Text("Сменить аккаунт"),
+            )),
       ),
     );
   }

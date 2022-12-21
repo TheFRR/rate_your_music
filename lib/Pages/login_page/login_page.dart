@@ -55,25 +55,28 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(builder: (context) {
-      final DartUser? user = Provider.of<DartUser?>(context);
-      bool isLoggedIn = user != null;
-      return isLoggedIn
-          ? const HomePage()
-          : Scaffold(
-              body: Center(
-                  child: Wrap(children: [
-                Center(
-                  child: Text("RateYourMusic",
-                      style: TextStyle(
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                          foreground: Paint()..shader = linearGradient)),
-                ),
-                Center(
-                  child: Material(
-                    child: Observer(
-                      builder: (_) => SizedBox(
+    return Material(
+      child: Observer(builder: (context) {
+        final DartUser? user = Provider.of<DartUser?>(context);
+        bool isLoggedIn = user != null;
+        return isLoggedIn
+            ? const HomePage()
+            : Scaffold(
+                body: Center(
+                    child: Wrap(children: [
+                  Center(
+                    child: Text("RateYourMusic",
+                        style: TextStyle(
+                            fontSize: 40.0,
+                            fontWeight: FontWeight.bold,
+                            foreground: Paint()..shader = linearGradient)),
+                  ),
+                  Center(
+                    child: Material(
+                      child:
+                          // Observer(
+                          //   builder: (_) =>
+                          SizedBox(
                         width: MediaQuery.of(context).size.width * 0.65,
                         child: TextFormField(
                           controller: emailController,
@@ -85,28 +88,32 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                ),
-                Center(
-                  child: Material(
-                    child: Observer(
-                      builder: (_) => SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.65,
-                          child: TextFormField(
-                              controller: passwordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: 'Пароль',
-                              ))),
+                  //),
+                  Center(
+                    child: Material(
+                      child:
+                          // Observer(
+                          //   builder: (_) =>
+                          SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.65,
+                              child: TextFormField(
+                                  controller: passwordController,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                    border: UnderlineInputBorder(),
+                                    labelText: 'Пароль',
+                                  ))),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Center(
-                    child: Material(
-                      child: Observer(
-                        builder: (_) => SizedBox(
+                  //),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Center(
+                      child: Material(
+                        child:
+                            //  Observer(
+                            //   builder: (_) =>
+                            SizedBox(
                           width: MediaQuery.of(context).size.width * 0.65,
                           child: ElevatedButton(
                               onPressed: () async {
@@ -140,29 +147,31 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20.0, bottom: 5.0),
-                  child:
-                      Center(child: Text("Нет аккаунта? Зарегистрируйтесь!")),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RegisterPage()));
-                        },
-                        child: const Center(
-                          child: Text("Создать аккаунт"),
-                        )),
+                  //),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 20.0, bottom: 5.0),
+                    child:
+                        Center(child: Text("Нет аккаунта? Зарегистрируйтесь!")),
                   ),
-                ),
-              ])),
-            );
-    });
+                  Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const RegisterPage()));
+                          },
+                          child: const Center(
+                            child: Text("Создать аккаунт"),
+                          )),
+                    ),
+                  ),
+                ])),
+              );
+      }),
+    );
   }
 }
